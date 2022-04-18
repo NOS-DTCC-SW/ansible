@@ -1,0 +1,12 @@
+---
+- name: Configure Firewall for RDP
+  firewalld:
+    port: 3389/tcp
+    permanent: yes
+    state: enabled
+- name: Configure Firewall for Cockpit
+  firewalld:
+    port: 9090/tcp
+    permanent: yes
+    state: enabled
+

@@ -1,0 +1,15 @@
+---
+- name: Install Software
+  yum:
+    name:
+      - git
+      - bind-utils
+      - nc
+      - curl
+      - wget
+      - nmap
+      - tcpdump
+      - xrdp
+      - tigervnc-server
+    state: present
+  tags: software

@@ -1,0 +1,18 @@
+---
+- name: Configure Cockpit Services (Web Management)
+  service:
+    name: cockpit
+    state: started
+    enabled: yes
+
+- name: Configure XRDP Service
+  service:
+    name: xrdp
+    state: started
+    enabled: yes
+
+- name: Configure Libvirt service
+  service:
+    name: libvirtd
+    state: started
+    enabled: yes 

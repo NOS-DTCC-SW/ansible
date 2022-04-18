@@ -1,0 +1,33 @@
+---
+- name: Configure Lab Host
+  hosts: sedrhel-a
+  become: yes
+  vars: 
+  roles:
+  tasks:
+  - name: Import EPEL GDG Key
+    rpm_key:
+      key: "https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-8"
+      state: present
+    when: ansible_facts['os_family'] == "RedHat"
+
+  - name: Install EPEL Repository
+    dnf:
+      name:  https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+      state: present
+    when: ansible_facts['os_family'] == "RedHat"
+  - name: Required Software
+    include_tasks:
+      file: install_software.yml
+    tags: software
+  - name: Modify Firewall Settings
+    include_tasks:
+      file: configure_firewall.yml
+  - name: Enable Services
+    include_tasks: configure_services.yml
+  - name: Modify Specific Files
+    include_tasks: modify_files.yml
+
+  - name: Reboot Host
+    reboot:
+ 
