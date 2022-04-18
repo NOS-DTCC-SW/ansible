@@ -1,0 +1,22 @@
+---
+- name: Make VM folders
+  file:
+    path: /data/vms/{{vm_name}}
+    state: directory
+    owner: qemu
+    group: qemu
+
+- name: Copy Disk Template to VM folder
+  copy:
+    src: /data/images/{{vm_image}}
+    dest: /data/vms/{{vm_name}}/{{vm_name}}.qcow2
+    owner: qemu
+    group: qemu
+
+- name: Create VM in KVM
+  command: >
+           virt-install -n {{vm_name}} --memory 4094 --vcpus 4 --import 
+           --disk /data/vms/{{vm_name}}/{{vm_name}}.qcow2 
+           --disk /data/isos/{{iso}},device=cdrom 
+           --os-variant rhel8.0 --network bridge=br0 --wait 0 --autostart
+ 

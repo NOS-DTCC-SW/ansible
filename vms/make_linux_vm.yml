@@ -1,0 +1,15 @@
+---
+- name: Create VMs for Class
+  hosts: localhost
+  become: yes
+  ignore_errors: yes
+  vars:
+    vm_image:  CentOS-7-x86_64-GenericCloud.qcow2
+    iso: "".iso
+  vars_prompt:
+    name: vm_name
+    prompt: Please enter your VM Name
+    private: no
+  tasks:
+    - name: Create VM from Template
+      include_tasks: vm_creation.yml
