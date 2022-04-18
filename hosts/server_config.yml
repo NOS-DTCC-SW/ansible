@@ -1,0 +1,40 @@
+---
+- name: Configure NOS Linux Servers
+  hosts: SEDSTAXX
+  become: yes
+  tasks:
+    - name: Install Cockpit (Web Management)
+      yum:
+        name: cockpit
+        state: latest
+    - name: Start the cockpit service
+      service:
+        name: cockpit
+        state: started
+        enabled: yes
+    - name: Adding EPEL Repo
+      yum: 
+        name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm 
+        state: present
+
+    - name: Install Software Packages
+      yum:
+        name: 
+           - bind-utils
+           - nc
+           - git
+           - curl
+           - wget
+           - nmap
+           - tcpdump
+           - xrdp
+           - tigervnc-server
+
+    - name: Configure RDP on Firewall
+      firewalld:
+        port: 3389/tcp
+        permanent: true
+        state: enabled
+
+    - name: Disable Wayland
+          
