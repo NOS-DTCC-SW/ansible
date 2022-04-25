@@ -12,6 +12,7 @@
     dest: /data/vms/{{vm_name}}/{{vm_name}}.qcow2
     owner: qemu
     group: qemu
+    remote_src: yes
 
 - name: Create VM in KVM
   command: >

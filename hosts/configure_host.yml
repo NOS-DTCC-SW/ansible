@@ -32,7 +32,13 @@
     include_tasks: configure_services.yml
   - name: Modify Specific Files
     include_tasks: modify_files.yml
-
+  - name: Modify Networking Configuration for KVM
+    include_tasks: 
+      file: configure_kvm.yml
+      apply: 
+        tags: kvm
+    tags: kvm
   - name: Reboot Host
     reboot:
+    tags: reboot
  
