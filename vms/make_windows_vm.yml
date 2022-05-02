@@ -1,0 +1,15 @@
+---
+- name: Create VMs for Class
+  hosts: SEDSTAX 
+  become: yes
+  ignore_errors: yes
+  vars:
+    vm_image: w2k22-gui.qcow2
+    iso: nos125.iso
+  vars_prompt:
+    name: vm_name
+    prompt: Please enter your VM Name
+    private: no
+  tasks:
+    - name: Create VM from Template
+      include_tasks: vm_creation.yml

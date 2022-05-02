@@ -1,6 +1,6 @@
 ---
 - name: Configure Lab Host
-  hosts: sedrhel-a
+  hosts: SEDSTAXX 
   become: yes
   vars: 
   roles:
@@ -9,13 +9,18 @@
     rpm_key:
       key: "https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-8"
       state: present
-    when: ansible_facts['os_family'] == "RedHat"
+    when: 
+      - ansible_facts['os_family'] == "RedHat"
+      - ansible_facts['distribution_major_version'] == "8"
 
   - name: Install EPEL Repository
     dnf:
       name:  https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
       state: present
-    when: ansible_facts['os_family'] == "RedHat"
+    when: 
+      - ansible_facts['os_family'] == "RedHat"
+      - ansible_facts['distribution_major_version'] == '8'
+    
   - name: Required Software
     include_tasks:
       file: install_software.yml
@@ -27,7 +32,13 @@
     include_tasks: configure_services.yml
   - name: Modify Specific Files
     include_tasks: modify_files.yml
-
+  - name: Modify Networking Configuration for KVM
+    include_tasks: 
+      file: configure_kvm.yml
+      apply: 
+        tags: kvm
+    tags: kvm
   - name: Reboot Host
     reboot:
+    tags: reboot
  
