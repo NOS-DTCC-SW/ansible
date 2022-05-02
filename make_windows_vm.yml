@@ -1,0 +1,34 @@
+---
+- name: Create Windows VM
+  hosts: localhost
+  become: yes
+  ignore_errors: yes
+  vars:
+    iso: custom-w2k22.iso
+    os: w2k22
+  vars_prompt:
+    - name: vm_name
+      prompt: Enter the VM Name
+      private: no
+    - name: vm_mode
+      prompt: Create VM from template or CD
+      private: no
+    - name: vm_type 
+      prompt: Which version of Windows - Core or Gui
+      private: no
+  tasks:
+    - name: Create VM from Template for Windows Core
+      vars:
+        vm_image: win2k22-gui.qcow2
+      include_tasks: vm_creation.yml
+      when: vm_mode != "CD" and vm_type == "Core"
+    - name: Create VM from Template for Windows GUI
+      vars:
+        vm_image: win2k22-gui.qcow2
+      include_tasks: vm_creation.yml
+      when: vm_mode != "CD" and vm_type == "GUI"
+    - name: Create VM from CD
+      vars:
+        vm_image: blankdisk.qcow2
+      include_tasks: vm_creation.yml
+      when: vm_mode == "CD"
